@@ -4,16 +4,20 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,6 +27,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static android.view.View.GONE;
+
 public class CadastrarLivro extends AppCompatActivity {
 
     private static final int CODE_GET_REQUEST = 1024;
@@ -30,6 +36,7 @@ public class CadastrarLivro extends AppCompatActivity {
 
     EditText EditTituloLivro, EditISBNlivro, EditAutorLivro, EditDonoLivro, EditcodLivro;
     Button btnCadastrarLivro;
+    ProgressBar progressBar;
     ListView ListaLivros;
     List<Livros> LivroList;
     boolean isUpdating = false;
@@ -38,13 +45,15 @@ public class CadastrarLivro extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cadastrar_livro_layout);
-        EditcodLivro = (EditText) findViewById(R.id.Edicodlivro);
+        EditcodLivro = (EditText) findViewById(R.id.Editcodlivro);
         EditTituloLivro = (EditText) findViewById(R.id.EditTituloLivro);
         EditISBNlivro = (EditText) findViewById(R.id.EditISBNlivro);
         EditAutorLivro = (EditText) findViewById(R.id.EditAutorLivro);
         EditDonoLivro = (EditText) findViewById(R.id.EditDonoLivro);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
         btnCadastrarLivro = (Button) findViewById(R.id.btnCadastrarLivro);
         ListaLivros = (ListView) findViewById(R.id.ListaLivros);
+
         LivroList = new ArrayList<>();
 
         btnCadastrarLivro.setOnClickListener(new View.OnClickListener() {
@@ -63,7 +72,7 @@ public class CadastrarLivro extends AppCompatActivity {
     private void createCadastroLivro() {
         String nomeLivro = EditTituloLivro.getText().toString().trim();
         String ISBNlivro = EditISBNlivro.getText().toString().trim();
-        String autorLivro = EditAutorLivro.getText().toString().trim();
+        String autor = EditAutorLivro.getText().toString().trim();
         String donoLivro = EditDonoLivro.getText().toString().trim();
 
         if (TextUtils.isEmpty(nomeLivro)) {
@@ -84,7 +93,7 @@ public class CadastrarLivro extends AppCompatActivity {
         HashMap<String, String> params = new HashMap<>();
         params.put("nomeLivro", nomeLivro);
         params.put("ISBNlivro", ISBNlivro);
-        params.put("autor", autorLivro);
+        params.put("autor", autor);
         params.put("donoLivro", donoLivro);
 
         PerformNetworkRequest request = new PerformNetworkRequest(Api.URL_CREATE_CADASTRO_LIVRO, params, CODE_POST_REQUEST);
@@ -99,7 +108,7 @@ public class CadastrarLivro extends AppCompatActivity {
         String codLivro = EditcodLivro.getText().toString();
         String nomeLivro = EditTituloLivro.getText().toString().trim();
         String ISBNlivro = EditISBNlivro.getText().toString().trim();
-        String autorLivro = EditAutorLivro.getText().toString().trim();
+        String autor = EditAutorLivro.getText().toString().trim();
         String donoLivro = EditDonoLivro.getText().toString().trim();
 
         if (TextUtils.isEmpty(nomeLivro)) {
@@ -119,10 +128,9 @@ public class CadastrarLivro extends AppCompatActivity {
         }
 
         HashMap<String, String> params = new HashMap<>();
-        params.put("codLivro", codLivro);
         params.put("nomeLivro", nomeLivro);
         params.put("ISBNlivro", ISBNlivro);
-        params.put("autor", autorLivro);
+        params.put("autor", autor);
         params.put("donoLivro", donoLivro);
 
 
@@ -150,7 +158,7 @@ public class CadastrarLivro extends AppCompatActivity {
             JSONObject obj = Livros.getJSONObject(i);
 
             LivroList.add(new Livros(
-                    obj.getInt("codCli"),
+                    obj.getInt("codLivro"),
                     obj.getString("NomeLivro"),
                     obj.getInt("ISBNlivro"),
                     obj.getString("autor"),
@@ -160,9 +168,10 @@ public class CadastrarLivro extends AppCompatActivity {
             ));
         }
         LivroAdapter adapter = new LivroAdapter(LivroList);
+        ListaLivros.setAdapter(adapter);
     }
 
-    private class PerformNetworkRequest extends Async<Void, Void, String> {
+    private class PerformNetworkRequest extends AsyncTask<Void, Void, String> {
         String url;
         HashMap<String, String> params;
         int requesteCode;
@@ -172,6 +181,27 @@ public class CadastrarLivro extends AppCompatActivity {
             this.params = params;
             this.requesteCode = requesteCode;
         }
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            progressBar.setVisibility(GONE);
+            try {
+                JSONObject object = new JSONObject(s);
+                if (!object.getBoolean("error")) {
+                    Toast.makeText(getApplicationContext(), object.getString("message"), Toast.LENGTH_SHORT).show();
+                    refreshLivroList(object.getJSONArray("livros"));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
 
         @Override
         protected String doInBackground(Void... voids) {
@@ -214,18 +244,16 @@ public class CadastrarLivro extends AppCompatActivity {
             final Livros livros = livrosList.get(position);
             textViewTitulo.setText(livros.getTituloLivro());
             textViewIBSNlivro.setText(livros.getISBNlivro());
-            textViewAutor.setText(livros.getAutorLivro());
+            textViewAutor.setText(livros.getAutor());
             textViewDono.setText(livros.getDonoLivro());
 
             textViewAlterarDados.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     isUpdating = true;
-                    isUpdating = true;
-                    EditcodLivro.setText(String.valueOf(livros.getCodLivro()));
                     EditTituloLivro.setText(livros.getTituloLivro());
                     EditISBNlivro.setText(String.valueOf(livros.getISBNlivro()));
-                    EditAutorLivro.setText(livros.getAutorLivro());
+                    EditAutorLivro.setText(livros.getAutor());
                     EditDonoLivro.setText(livros.getDonoLivro());
                     btnCadastrarLivro.setText("Alterar");
                 }

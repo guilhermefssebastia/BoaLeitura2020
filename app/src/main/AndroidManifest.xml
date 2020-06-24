@@ -14,19 +14,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".CadastroUsuario"></activity>
-        <activity android:name=".CadastrarLivro" />
-        <activity
-            android:name=".ui.login.CadastrarLivro"
-            android:label="@string/title_activity_cadastrar_livro" />
-        <activity
-            android:name=".MainActivity"
-            android:theme="@style/Theme.Design.NoActionBar">
+        <activity android:name=".Cliente_Activity"></activity>
+        <activity android:name=".Login_Activity" android:theme="@style/temaSemBarra" />
+        <activity android:name=".Splash_Activity" android:theme="@style/temaSemBarra">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".CadastrarLivro"
+            android:theme="@style/Theme.Design.NoActionBar" />
+        <activity android:name=".MainActivity">
+
         </activity>
     </application>
 

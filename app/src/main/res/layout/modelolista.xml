@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:layout_marginTop="5dp"
+    android:background="@color/corPrincipal"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/TextViewTitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Titulo"
+        android:textSize="30dp" />
+
+    <TextView
+        android:id="@+id/TextViewISBNlivro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:text="ISBN"
+        android:textSize="25dp" />
+
+    <TextView
+        android:id="@+id/TextViewAutorLivro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:text="Autor"
+        android:textSize="25dp" />
+
+
+    <TextView
+        android:id="@+id/TextViewDono"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:text="Dono"
+        android:textSize="25dp" />
+
+    <LinearLayout
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="300dp"
+        android:layout_marginTop="-50dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/TextViewAlterarDados"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:background="#fff"
+            android:clickable="true"
+            android:padding="5dp"
+            android:text="Alterar Dados"
+            android:textColor="@color/corPrincipal"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/TextViewExcluirLivro"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="#fff"
+            android:clickable="true"
+            android:padding="5dp"
+            android:text="Excluir Livro"
+            android:textColor="@color/corPrincipal"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

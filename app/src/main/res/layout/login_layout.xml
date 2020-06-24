@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/corPrincipal"
+    android:orientation="vertical"
+    tools:context=".Login_Activity">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:text="Bem vindo ao Boa Leitura"
+        android:textColor="#fff"
+        android:textSize="30dp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/txtEmail"
+            android:layout_width="380dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:background="#fff"
+            android:hint="E-mail"
+            android:inputType="textEmailAddress"
+            android:padding="10dp"
+            android:textColorHint="#000" />
+
+        <EditText
+            android:id="@+id/txtPassword"
+            android:layout_width="380dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="#fff"
+            android:hint="Senha"
+            android:inputType="textPassword"
+            android:padding="10dp"
+            android:textColorHint="#000" />
+
+        <Button
+            android:id="@+id/btnLogar"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="30dp"
+            android:background="#fff"
+            android:text="Logar"
+            android:textAllCaps="false"
+            android:textColor="#000" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="15dp"
+            android:text="OR"
+            android:textColor="#fff" />
+
+        <Button
+            android:id="@+id/btnIrCadastro"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp"
+            android:background="#fff"
+            android:text="Cadastrar"
+            android:textAllCaps="false"
+            android:textColor="#000" />
+
+        <Button
+            android:id="@+id/btnSair"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp"
+            android:background="#fff"
+            android:text="Sair"
+            android:textAllCaps="false"
+            android:textColor="#000" />
+
+
+    </LinearLayout>
+
+</LinearLayout>
